@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+// Custom Exception Class
 class InvalidBookingException extends Exception {
 
     public InvalidBookingException(String message) {
@@ -11,7 +12,7 @@ class InvalidBookingException extends Exception {
 }
 
 
-
+// Room Inventory Manager
 class RoomInventory {
 
     private Map<String, Integer> inventory;
@@ -78,6 +79,7 @@ class RoomInventory {
 }
 
 
+// Booking Validator Service
 class BookingValidatorService {
 
     public void validateBookingInput(String guestName,
@@ -101,7 +103,7 @@ class BookingValidatorService {
 }
 
 
-
+// Main Class
 public class UseCase9ErrorHandlingValidation {
 
     public static void main(String[] args) {
