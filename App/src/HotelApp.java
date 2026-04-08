@@ -1,102 +1,131 @@
-import java.util.HashMap;
 
-abstract class Room {
+import java.util.ArrayList;
+import java.util.List;
 
-    protected String roomType;
-    protected double price;
 
-    public Room(String roomType, double price) {
+class Reservation {
+
+    private String reservationId;
+    private String guestName;
+    private String roomType;
+
+    public Reservation(String reservationId,
+                       String guestName,
+                       String roomType) {
+
+        this.reservationId = reservationId;
+        this.guestName = guestName;
         this.roomType = roomType;
-        this.price = price;
     }
 
-    public void displayDetails() {
-        System.out.println("Room Type: " + roomType);
-        System.out.println("Price per night: $" + price);
+    public String getReservationId() {
+        return reservationId;
+    }
+
+    public String getGuestName() {
+        return guestName;
     }
 
     public String getRoomType() {
         return roomType;
     }
-}
 
-class SingleRoom extends Room {
-    public SingleRoom() {
-        super("Single Room", 80);
+    public void displayReservation() {
+
+        System.out.println("Reservation ID: "
+                + reservationId);
+
+        System.out.println("Guest Name: "
+                + guestName);
+
+        System.out.println("Room Type: "
+                + roomType);
+
+        System.out.println("---------------------------");
     }
 }
 
-class DoubleRoom extends Room {
-    public DoubleRoom() {
-        super("Double Room", 120);
+
+class BookingHistory {
+
+    private List<Reservation> history;
+
+    public BookingHistory() {
+
+        history = new ArrayList<>();
+    }
+
+    public void addReservation(
+            Reservation reservation) {
+
+        history.add(reservation);
+
+        System.out.println("Reservation stored: "
+                + reservation.getReservationId());
+    }
+
+    public List<Reservation> getHistory() {
+
+        return history;
     }
 }
 
-class SuiteRoom extends Room {
-    public SuiteRoom() {
-        super("Suite Room", 250);
-    }
-}
 
-class RoomInventory {
+class BookingReportService {
 
-    private HashMap<String, Integer> inventory;
+    public void generateReport(
+            List<Reservation> reservations) {
 
-    public RoomInventory() {
+        System.out.println("\nBooking History Report\n");
 
-        inventory = new HashMap<>();
+        for (Reservation reservation :
+                reservations) {
 
-        inventory.put("Single Room", 5);
-        inventory.put("Double Room", 3);
-        inventory.put("Suite Room", 0);
-    }
-
-    public int getAvailability(String roomType) {
-        return inventory.getOrDefault(roomType, 0);
-    }
-}
-
-class RoomSearchService {
-
-    private RoomInventory inventory;
-
-    public RoomSearchService(RoomInventory inventory) {
-        this.inventory = inventory;
-    }
-
-    public void searchAvailableRooms(Room[] rooms) {
-
-        System.out.println("Available Rooms:\n");
-
-        for (Room room : rooms) {
-
-            int available = inventory.getAvailability(room.getRoomType());
-
-            if (available > 0) {
-
-                room.displayDetails();
-                System.out.println("Available: " + available);
-                System.out.println();
-            }
+            reservation.displayReservation();
         }
+
+        System.out.println("Total Reservations: "
+                + reservations.size());
     }
 }
 
-public class UseCase4RoomSearch {
+
+public class UseCase8BookingHistoryReport {
 
     public static void main(String[] args) {
 
-        RoomInventory inventory = new RoomInventory();
+        BookingHistory history =
+                new BookingHistory();
 
-        Room[] rooms = {
-                new SingleRoom(),
-                new DoubleRoom(),
-                new SuiteRoom()
-        };
 
-        RoomSearchService searchService =
-                new RoomSearchService(inventory);
+        Reservation r1 =
+                new Reservation(
+                        "RES101",
+                        "Pranjal",
+                        "Single Room");
 
-        searchService.searchAvailableRooms(rooms);
+        Reservation r2 =
+                new Reservation(
+                        "RES102",
+                        "Rahul",
+                        "Double Room");
+
+        Reservation r3 =
+                new Reservation(
+                        "RES103",
+                        "Sneha",
+                        "Suite Room");
+
+
+        history.addReservation(r1);
+        history.addReservation(r2);
+        history.addReservation(r3);
+
+
+        BookingReportService reportService =
+                new BookingReportService();
+
+        reportService.generateReport(
+                history.getHistory());
     }
 }
